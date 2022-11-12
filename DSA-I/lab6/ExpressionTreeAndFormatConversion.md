@@ -1,0 +1,19 @@
+Consider an arithmetic expression a + b * c + d. This is an expression in infix format. When we apply associativity and precedence rules and fully parenthesise the expression, it becomes ((a + (b * c)) + d ). Note that in the fully parenthesised infix form, each operator has an associated pair of parenthesis (which is the innermost parenthesis enclosing that operator) and vice versa. 
+ 
+Though we are more familar with infix expressions, they need parenthesis to override the precedence rules like in the expression (a + b)*c. To eliminate the need for parenthesis, and also for easy machine evaluation, 
+it is more convenient to use postfix expressions. The postfix expression corresponding to the expression a + b * c + d is  a b c * + d +. You can manually obtain this by first fully parenthesising the infix expression and then by replacing each closing parenthesis with the operator associated with the parenthesis and ignoring the opening parenthesis.  Similary, a prefix expression corresponding to the above expression is + + a * b c d and obtained from a fully parenthesised infix expressions by a symmetric method of moving operators leftward. 
+
+An expression tree is another representation of expressions, where the operators are at the internal nodes and operands appear at the leafs. For simplicity, we will only consider operators with two operands. If the expression has no operators, but just one operand the expression tree consist of only the root node, storing the single operand and the left and right subtrees are empty. If 'op' is the opertor corresponding to the outermost parenthesis in the fully parenthesised form of an expression E and E1 and E2 the subexpressions of E which gives the first and second operands of 'op', then the root of the expression tree stores the operator 'op' and the left and right subtrees of the root node are expression trees corresponding to the subexpressions E1 and E2. 
+For example, in the expression tree corresponding to ((a + (b * c)) + d ) has + as the operand at the root node, the expression tree of (a+(b*c)) as the left subtree of root node and the expression tree of d as the right subtree of the root node. 
+
+Given a postfix expression, it is easy to convert it into an expression tree, using the following method. 
+The elements of the stack are expression trees. 
+1. Initially, we start with an empty stack. 
+2. Start reading the postfix expression from left to right doing the following:
+  2a. On reading an operand, create an expression tree with a single node containing this operand and push to stack, and continue.
+  2b. On reading an operator 'op', pop the top two elements from the stack. (If we are not able to do this, the expression was invalid and we can exit with an error.) Let these trees popped be T2 and T1 respectively. Create a new node whose opertor is 'op', left subtree is T1 and right subtree is T2. Push the new tree into the stack and continue.
+  2c. If we reach end of input, if the expression is valid, the stack must contain only one tree, which is the expression tree corresponding to the input expression.
+  
+From an expression tree, it is easy to obtain the corresponding infix expression by an inorder traversal of the expression tree. Similarly, a preorder traversal of the expression tree will give its preorder expression and a postoder traversal of the expression tree will give its postfix expression. 
+
+Write a program that takes an expression in postfix form as input and create its equivalent expression tree using the algorithm mentioned. By traversing the tree, print the corresponding fully parenthesised infix expression and the corresoinding prefix expression. You may assume that your operands are English small letters and your operators are +, *, - ,/ and ^.
